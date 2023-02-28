@@ -1,6 +1,0 @@
-name = "AdventOfCode2020"
-uuid = "e648f070-4591-4b81-9984-22f85858127c"
-authors = ["Joona Piirainen <joona.piirainen@gmail.com>"]
-version = "0.1.0"
-
-[deps]
