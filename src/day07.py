@@ -11,7 +11,6 @@ def parse_inner(s: str):
 def parse_rule(rule: str):
     before, after = rule.split(' contain ')
     bag_color = ' '.join(before.split(' ')[: 2])
-
     return (bag_color, parse_inner(after))
 
 
