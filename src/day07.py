@@ -19,7 +19,7 @@ rules = {k: v for (k, v) in [parse_rule(rule) for rule in I]}
 
 
 def n_can_contain(target, rules) -> int:
-    @ lru_cache
+    @lru_cache
     def contains(target: str, rule):
         contents = rules.get(rule, {})
         return (target in contents) or any(contains(target, inner) for inner in contents)
