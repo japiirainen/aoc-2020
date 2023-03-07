@@ -11,5 +11,5 @@ def part1():
         cs = map(lambda x: x[0] + x[1], combinations(y, 2))
         if len([() for c in cs if c == x]) == 0:
             return x
-            
+
 print(part1())
