@@ -1,4 +1,5 @@
 from itertools import combinations
+from collections import deque
 
 I = [int(x) for x in open(0).read().splitlines()]
 
@@ -16,5 +17,32 @@ def invalids_():
 
 invalids = invalids_()
 
+first_invalid = next(invalids)
+
 # part 1
-print(next(invalids))
+print(first_invalid)
+
+
+def find_cont_seq(xs, target):
+    xs = xs[::-1]
+    seq = deque()
+    total = 0
+
+    while total != target:
+        if total < target:
+            x = xs.pop()
+            seq.append(x)
+            total += x
+        if total > target:
+            x = seq.popleft()
+            total -= x
+
+    return seq
+
+
+def part2(xs, target):
+    cont_seq = find_cont_seq(xs[:], target)
+    return min(cont_seq) + max(cont_seq)
+
+
+print(part2(I, first_invalid))
