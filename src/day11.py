@@ -30,8 +30,9 @@ def step_1(prev_gen):
     next_gen = [s[:] for s in prev_gen[:]]
     for i, row in enumerate(prev_gen):
         for j, cur in enumerate(row):
-            ns = neighbors(prev_gen, i, j)
-            n_occupied = len([x for x in ns if x == occupied])
+            if cur != occupied and cur != empty:
+                continue
+            n_occupied = len([x for x in neighbors(prev_gen, i, j) if x == occupied])
             if cur == empty and n_occupied == 0:
                 next_gen[i][j] = occupied
             elif cur == occupied and n_occupied >= 4:
@@ -43,8 +44,9 @@ def step_2(prev_gen):
     next_gen = [s[:] for s in prev_gen[:]]
     for i, row in enumerate(prev_gen):
         for j, cur in enumerate(row):
-            ss = see(prev_gen, i, j)
-            n_occupied = len([x for x in ss if x == occupied])
+            if cur != occupied and cur != empty:
+                continue
+            n_occupied = len([x for x in see(prev_gen, i, j) if x == occupied])
             if cur == empty and n_occupied == 0:
                 next_gen[i][j] = occupied
             elif cur == occupied and n_occupied >= 5:
@@ -64,8 +66,7 @@ def count_occupied(l):
 
 
 def solve(l, step_f):
-    fixed = find_fix(l, step_f)
-    return count_occupied(fixed)
+    return count_occupied(find_fix(l, step_f))
 
 
 # part 1
