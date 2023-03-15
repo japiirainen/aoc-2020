@@ -60,12 +60,7 @@ def find_fix(gen, step_f):
 
 
 def count_occupied(l):
-    c = 0
-    for r in l:
-        for item in r:
-            if item == occupied:
-                c += 1
-    return c
+    return sum([len([() for c in r if c == occupied]) for r in l])
 
 
 def solve(l, step_f):
