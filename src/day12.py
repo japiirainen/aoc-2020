@@ -1,13 +1,6 @@
-import re
 from typing import Tuple, List
 
-
-def parse_instruction(line: str) -> Tuple[str, int]:
-    m = re.match(r"([NSEWLRF])([0-9]+)", line)
-    return (m.group(1), int(m.group(2)))
-
-
-I = [parse_instruction(line) for line in open(0).read().splitlines()]
+I = [(lambda l: (l[0], int(l[1:])))(line) for line in open(0).read().splitlines()]
 
 dirs = {"N": (0, 1), "E": (1, 0), "S": (0, -1), "W": (-1, 0)}
 
