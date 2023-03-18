@@ -24,16 +24,17 @@ def move(x, y, dx, dy, n):
 
 
 def navigate(instructions: List[Tuple[str, int]], loc=(0, 0), dir=dirs["E"]):
-    for op, arg in instructions:
-        if op == "L":
-            dir = turn(-arg, *dir)
-        elif op == "R":
-            dir = turn(arg, *dir)
-        elif op == "F":
-            loc = move(*loc, *dir, arg)
-        else:
-            loc = move(*loc, *dirs[op], arg)
-    return loc
+    if len(instructions) == 0:
+        return loc
+    (op, arg), *rest = instructions
+    if op == "L":
+        return navigate(rest, loc, turn(-arg, *dir))
+    elif op == "R":
+        return navigate(rest, loc, turn(arg, *dir))
+    elif op == "F":
+        return navigate(rest, move(*loc, *dir, arg), dir)
+    else:
+        return navigate(rest, move(*loc, *dirs[op], arg), dir)
 
 
 def manhattan_dist(p):
@@ -45,16 +46,17 @@ print(manhattan_dist(navigate(I)))
 
 
 def navigate2(instructions: List[Tuple[str, int]], wp=(10, 1), loc=(0, 0)):
-    for op, arg in instructions:
-        if op == "L":
-            wp = turn(-arg, *wp)
-        elif op == "R":
-            wp = turn(arg, *wp)
-        elif op == "F":
-            loc = move(*loc, *wp, arg)
-        else:
-            wp = move(*wp, *dirs[op], arg)
-    return loc
+    if len(instructions) == 0:
+        return loc
+    (op, arg), *rest = instructions
+    if op == "L":
+        return navigate2(rest, turn(-arg, *wp), loc)
+    elif op == "R":
+        return navigate2(rest, turn(arg, *wp), loc)
+    elif op == "F":
+        return navigate2(rest, wp, move(*loc, *wp, arg))
+    else:
+        return navigate2(rest, move(*wp, *dirs[op], arg), loc)
 
 
 # part 2
