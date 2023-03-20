@@ -1,17 +1,11 @@
 from typing import Tuple, List
-from dataclasses import dataclass
+from collections import namedtuple
 import numpy as np
 import math
 
 Ticket = List[int]
 Rule = List[Tuple[int, int]]
-
-
-@dataclass
-class Env:
-    rules: dict[str, Rule]
-    my: Ticket
-    nearby: List[Ticket]
+Env = namedtuple("Env", ["rules", "my", "nearby"])
 
 
 def parse_input(I):
@@ -63,15 +57,12 @@ def find_valid_fields(env: Env, valids: List[Ticket]):
     valids = enumerate([valid_rules(col, env.rules) for col in valids])
     valids = sorted(valids, key=lambda s: len(s[1]))
     for i in range(1, len(valids)):
-        item = valids[i - 1][1][0]
         for j in range(i, len(valids)):
-            valids[j][1].remove(item)
-    ids = [idx for (idx, field) in valids if field[0].startswith("departure")]
-    assert len(ids) == 6, "There must be 6 fields that start with 'departure'"
-    return math.prod(env.my[i] for i in ids)
+            valids[j][1].remove(valids[i - 1][1][0])
+    return [env.my[i] for (i, field) in valids if field[0].startswith("departure")]
 
 
 valids = [t for t in env.nearby if find_invalid(t, env.rules) == None]
 
 # part 2
-print(find_valid_fields(env, valids))
+print(math.prod(find_valid_fields(env, valids)))
