@@ -33,9 +33,31 @@ def score(winning_deck):
 print(score([*play(*(map(deque, I)))]))
 
 
-# def play_rec(d1, d2):
-#     pass
+def seen(d1, d2, P):
+    H = tuple(map(tuple, (d1, d2)))
+    if H in P:
+        return True
+    P.add(H)
+    return False
+
+
+def play_rec(deals):
+    deals = tuple(map(deque, deals))
+    P = set()
+    while all(deals):
+        if seen(*deals, P):
+            return (deals[0], ())
+        topcards = tuple(map(deque.popleft, deals))
+        if all(len(deals[p]) >= topcards[p] for p in (0, 1)):
+            deals2 = [tuple(deals[p])[: topcards[p]] for p in (0, 1)]
+            result = play_rec(deals2)
+            winner = 0 if result[0] else 1
+        else:
+            winner = 0 if topcards[0] > topcards[1] else 1
+        deals[winner].extend([topcards[winner], topcards[1 - winner]])
+    return deals
 
 
 # part 2
-# print(score([*play_rec(*(map(deque, I)))]))
+d1, d2 = play_rec(I)
+print(score(*[d1 or d2]))
